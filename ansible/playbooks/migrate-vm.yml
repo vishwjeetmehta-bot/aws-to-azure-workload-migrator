@@ -1,0 +1,28 @@
+---
+- name: Enterprise Linux Workload Migration to Azure
+  hosts: migration_targets
+  become: yes
+  tasks:
+    - name: Pre-migration system cleanup
+      ansible.builtin.apt:
+        clean: yes
+        autoremove: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install Azure Linux Agent (WALinuxAgent)
+      ansible.builtin.package:
+        name: walinuxagent
+        state: present
+
+    - name: Configure WALinuxAgent
+      ansible.builtin.systemd:
+        name: walinuxagent
+        enabled: yes
+        state: started
+
+    - name: Verify Network Interface DHCP compatibility
+      ansible.builtin.lineinfile:
+        path: /etc/sysconfig/network
+        line: "NETWORKING=yes"
+        create: yes
+      when: ansible_os_family == "RedHat"
