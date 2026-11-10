@@ -26,3 +26,4 @@
         line: "NETWORKING=yes"
         create: yes
       when: ansible_os_family == "RedHat"
+

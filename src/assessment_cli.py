@@ -27,3 +27,4 @@ def map_workload(ec2_type: str, ebs_size_gb: int):
 if __name__ == "__main__":
     result = map_workload("m5.xlarge", 250)
     print(f"Recommended Azure Sizing: {result}")
+
